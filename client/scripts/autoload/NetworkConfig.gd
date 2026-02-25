@@ -1,6 +1,6 @@
 extends Node
 
-var server_host: String = "172.16.0.148"
+var server_host: String = "51.79.138.246"
 var server_port: int = 8700
 var use_ssl: bool = false
 

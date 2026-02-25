@@ -1,6 +1,90 @@
-[gd_scene load_steps=2 format=3 uid="uid://login001"]
+[gd_scene load_steps=12 format=3 uid="uid://login001"]
 
 [ext_resource type="Script" path="res://scripts/login/login.gd" id="1"]
+
+[sub_resource type="StyleBoxFlat" id="SF_bg"]
+bg_color = Color(0.039, 0.067, 0.157, 1)
+
+[sub_resource type="StyleBoxFlat" id="SF_card"]
+bg_color = Color(0.071, 0.149, 0.267, 1)
+corner_radius_top_left = 28
+corner_radius_top_right = 28
+corner_radius_bottom_right = 28
+corner_radius_bottom_left = 28
+shadow_color = Color(0, 0, 0, 0.5)
+shadow_size = 20
+shadow_offset = Vector2(0, 8)
+
+[sub_resource type="StyleBoxFlat" id="SF_input"]
+bg_color = Color(0.039, 0.094, 0.18, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.33, 0.42, 0.55, 1)
+corner_radius_top_left = 14
+corner_radius_top_right = 14
+corner_radius_bottom_right = 14
+corner_radius_bottom_left = 14
+content_margin_left = 16
+content_margin_right = 16
+
+[sub_resource type="StyleBoxFlat" id="SF_input_focus"]
+bg_color = Color(0.039, 0.094, 0.18, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.831, 0.686, 0.216, 1)
+corner_radius_top_left = 14
+corner_radius_top_right = 14
+corner_radius_bottom_right = 14
+corner_radius_bottom_left = 14
+content_margin_left = 16
+content_margin_right = 16
+
+[sub_resource type="StyleBoxFlat" id="SF_btn_gold"]
+bg_color = Color(0.831, 0.686, 0.216, 1)
+corner_radius_top_left = 26
+corner_radius_top_right = 26
+corner_radius_bottom_right = 26
+corner_radius_bottom_left = 26
+shadow_color = Color(0.831, 0.686, 0.216, 0.35)
+shadow_size = 10
+shadow_offset = Vector2(0, 4)
+
+[sub_resource type="StyleBoxFlat" id="SF_btn_gold_hover"]
+bg_color = Color(0.918, 0.769, 0.271, 1)
+corner_radius_top_left = 26
+corner_radius_top_right = 26
+corner_radius_bottom_right = 26
+corner_radius_bottom_left = 26
+
+[sub_resource type="StyleBoxFlat" id="SF_btn_outline"]
+bg_color = Color(0, 0, 0, 0)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.831, 0.686, 0.216, 0.8)
+corner_radius_top_left = 26
+corner_radius_top_right = 26
+corner_radius_bottom_right = 26
+corner_radius_bottom_left = 26
+
+[sub_resource type="StyleBoxFlat" id="SF_btn_outline_hover"]
+bg_color = Color(0.831, 0.686, 0.216, 0.1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.831, 0.686, 0.216, 1)
+corner_radius_top_left = 26
+corner_radius_top_right = 26
+corner_radius_bottom_right = 26
+corner_radius_bottom_left = 26
+
+[sub_resource type="StyleBoxEmpty" id="SBE_1"]
 
 [node name="Login" type="Control"]
 layout_mode = 3
@@ -11,89 +95,186 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1")
 
-[node name="Background" type="ColorRect" parent="."]
+[node name="BG" type="PanelContainer" parent="."]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -3.0
-offset_right = -3.0
 grow_horizontal = 2
 grow_vertical = 2
-color = Color(0.08, 0.12, 0.18, 1)
+theme_override_styles/panel = SubResource("SF_bg")
 
-[node name="VBox" type="VBoxContainer" parent="."]
+[node name="DecoSpade" type="Label" parent="."]
 layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -200.0
-offset_top = -200.0
-offset_right = 200.0
-offset_bottom = 200.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_left = 12.0
+offset_top = 16.0
+offset_right = 112.0
+offset_bottom = 116.0
+modulate = Color(0.831, 0.686, 0.216, 0.07)
+text = "♠"
+theme_override_font_sizes/font_size = 100
+
+[node name="DecoHeart" type="Label" parent="."]
+layout_mode = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -112.0
+offset_top = 16.0
+offset_right = -12.0
+offset_bottom = 116.0
+modulate = Color(0.878, 0.196, 0.196, 0.07)
+text = "♥"
+horizontal_alignment = 2
+theme_override_font_sizes/font_size = 100
+
+[node name="DecoClub" type="Label" parent="."]
+layout_mode = 1
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 12.0
+offset_top = -112.0
+offset_right = 112.0
+offset_bottom = -16.0
+modulate = Color(0.831, 0.686, 0.216, 0.07)
+text = "♣"
+theme_override_font_sizes/font_size = 100
+
+[node name="DecoDiamond" type="Label" parent="."]
+layout_mode = 1
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -112.0
+offset_top = -112.0
+offset_right = -12.0
+offset_bottom = -16.0
+modulate = Color(0.878, 0.196, 0.196, 0.07)
+text = "♦"
+horizontal_alignment = 2
+theme_override_font_sizes/font_size = 100
+
+[node name="Center" type="CenterContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_constants/separation = 16
 
-[node name="Title" type="Label" parent="VBox"]
+[node name="Card" type="PanelContainer" parent="Center"]
 layout_mode = 2
-text = "TIEN LEN MIEN NAM"
+custom_minimum_size = Vector2(560, 0)
+theme_override_styles/panel = SubResource("SF_card")
+
+[node name="Margin" type="MarginContainer" parent="Center/Card"]
+layout_mode = 2
+theme_override_constants/margin_left = 44
+theme_override_constants/margin_top = 52
+theme_override_constants/margin_right = 44
+theme_override_constants/margin_bottom = 52
+
+[node name="VBox" type="VBoxContainer" parent="Center/Card/Margin"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Title" type="Label" parent="Center/Card/Margin/VBox"]
+layout_mode = 2
+modulate = Color(0.831, 0.686, 0.216, 1)
+text = "TIẾN LÊN"
 horizontal_alignment = 1
-vertical_alignment = 1
+theme_override_font_sizes/font_size = 48
 
-[node name="Subtitle" type="Label" parent="VBox"]
+[node name="Subtitle" type="Label" parent="Center/Card/Margin/VBox"]
 layout_mode = 2
-text = "Southern Vietnamese Card Game"
+modulate = Color(0.306, 0.8, 0.769, 1)
+text = "Miền Nam  ♠  ♥  ♦  ♣"
 horizontal_alignment = 1
+theme_override_font_sizes/font_size = 15
 
-[node name="Spacer" type="Control" parent="VBox"]
-custom_minimum_size = Vector2(0, 30)
+[node name="Gap1" type="Control" parent="Center/Card/Margin/VBox"]
+custom_minimum_size = Vector2(0, 20)
 layout_mode = 2
 
-[node name="UsernameLabel" type="Label" parent="VBox"]
+[node name="UserLbl" type="Label" parent="Center/Card/Margin/VBox"]
 layout_mode = 2
+modulate = Color(0.78, 0.82, 0.86, 1)
 text = "Username"
+theme_override_font_sizes/font_size = 13
 
-[node name="UsernameInput" type="LineEdit" parent="VBox"]
+[node name="UsernameInput" type="LineEdit" parent="Center/Card/Margin/VBox"]
 unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 54)
 layout_mode = 2
+theme_override_styles/normal = SubResource("SF_input")
+theme_override_styles/focus = SubResource("SF_input_focus")
+theme_override_colors/font_color = Color(0.91, 0.88, 0.82, 1)
+theme_override_colors/font_placeholder_color = Color(0.4, 0.47, 0.56, 1)
+theme_override_font_sizes/font_size = 17
 placeholder_text = "Enter username..."
 max_length = 30
 
-[node name="PasswordLabel" type="Label" parent="VBox"]
+[node name="PassLbl" type="Label" parent="Center/Card/Margin/VBox"]
 layout_mode = 2
+modulate = Color(0.78, 0.82, 0.86, 1)
 text = "Password"
+theme_override_font_sizes/font_size = 13
 
-[node name="PasswordInput" type="LineEdit" parent="VBox"]
+[node name="PasswordInput" type="LineEdit" parent="Center/Card/Margin/VBox"]
 unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 54)
 layout_mode = 2
+theme_override_styles/normal = SubResource("SF_input")
+theme_override_styles/focus = SubResource("SF_input_focus")
+theme_override_colors/font_color = Color(0.91, 0.88, 0.82, 1)
+theme_override_colors/font_placeholder_color = Color(0.4, 0.47, 0.56, 1)
+theme_override_font_sizes/font_size = 17
 placeholder_text = "Enter password..."
 max_length = 50
 secret = true
 
-[node name="Spacer2" type="Control" parent="VBox"]
-custom_minimum_size = Vector2(0, 10)
+[node name="Gap2" type="Control" parent="Center/Card/Margin/VBox"]
+custom_minimum_size = Vector2(0, 8)
 layout_mode = 2
 
-[node name="LoginButton" type="Button" parent="VBox"]
+[node name="LoginButton" type="Button" parent="Center/Card/Margin/VBox"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(0, 50)
+custom_minimum_size = Vector2(0, 58)
 layout_mode = 2
+theme_override_styles/normal = SubResource("SF_btn_gold")
+theme_override_styles/hover = SubResource("SF_btn_gold_hover")
+theme_override_styles/pressed = SubResource("SF_btn_gold")
+theme_override_styles/focus = SubResource("SBE_1")
+theme_override_styles/disabled = SubResource("SF_btn_outline")
+theme_override_colors/font_color = Color(0.08, 0.08, 0.08, 1)
+theme_override_colors/font_hover_color = Color(0.08, 0.08, 0.08, 1)
+theme_override_colors/font_pressed_color = Color(0.08, 0.08, 0.08, 1)
+theme_override_font_sizes/font_size = 17
 text = "LOGIN"
 
-[node name="RegisterButton" type="Button" parent="VBox"]
+[node name="RegisterButton" type="Button" parent="Center/Card/Margin/VBox"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(0, 50)
+custom_minimum_size = Vector2(0, 58)
 layout_mode = 2
-text = "REGISTER"
+theme_override_styles/normal = SubResource("SF_btn_outline")
+theme_override_styles/hover = SubResource("SF_btn_outline_hover")
+theme_override_styles/pressed = SubResource("SF_btn_outline")
+theme_override_styles/focus = SubResource("SBE_1")
+theme_override_colors/font_color = Color(0.831, 0.686, 0.216, 1)
+theme_override_colors/font_hover_color = Color(0.918, 0.769, 0.271, 1)
+theme_override_colors/font_pressed_color = Color(0.71, 0.576, 0.137, 1)
+theme_override_font_sizes/font_size = 17
+text = "CREATE ACCOUNT"
 
-[node name="StatusLabel" type="Label" parent="VBox"]
+[node name="StatusLabel" type="Label" parent="Center/Card/Margin/VBox"]
 unique_name_in_owner = true
 layout_mode = 2
+modulate = Color(0.306, 0.8, 0.769, 1)
 horizontal_alignment = 1
 autowrap_mode = 2
+theme_override_font_sizes/font_size = 14
 
-[connection signal="pressed" from="VBox/LoginButton" to="." method="_on_login_pressed"]
-[connection signal="pressed" from="VBox/RegisterButton" to="." method="_on_register_pressed"]
+[connection signal="pressed" from="Center/Card/Margin/VBox/LoginButton" to="." method="_on_login_pressed"]
+[connection signal="pressed" from="Center/Card/Margin/VBox/RegisterButton" to="." method="_on_register_pressed"]
