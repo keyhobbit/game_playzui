@@ -54,7 +54,7 @@ A high-concurrency, real-time multiplayer card game (Tien Len Mien Nam / Souther
 ### Start the Backend
 
 ```bash
-docker-compose up -d --build
+docker compose up -d --build
 ```
 
 Services will be available at:
@@ -70,6 +70,8 @@ Services will be available at:
 3. Press F5 to run, or export to Android APK
 
 ### Android Deployment
+
+For the complete environment setup (JDK, Android SDK/NDK, keystore, export presets), see [ANDROID_BUILD.md](ANDROID_BUILD.md).
 
 ```bash
 # Export APK from Godot Editor, then:
@@ -190,7 +192,7 @@ The easiest way to test on your Android phone without building an APK:
 
 ```bash
 # 1. Start the backend
-docker-compose up -d --build
+docker compose up -d --build
 
 # 2. Serve the web client from the project root
 cd /path/to/game_playzui
