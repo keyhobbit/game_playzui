@@ -1,0 +1,70 @@
+version: "3.9"
+
+services:
+  app:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - "8700:8700"
+    environment:
+      - APP_PORT=8700
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_USER=tienlen
+      - DB_PASSWORD=tienlen_secret
+      - DB_NAME=tienlen
+      - DB_SSLMODE=disable
+      - REDIS_ADDR=redis:6379
+      - REDIS_PASSWORD=
+      - JWT_SECRET=change-me-in-production-please
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - tienlen-net
+    restart: unless-stopped
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "8701:6379"
+    volumes:
+      - redis-data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+    networks:
+      - tienlen-net
+    restart: unless-stopped
+
+  postgres:
+    image: postgres:16-alpine
+    ports:
+      - "8702:5432"
+    environment:
+      - POSTGRES_USER=tienlen
+      - POSTGRES_PASSWORD=tienlen_secret
+      - POSTGRES_DB=tienlen
+    volumes:
+      - pg-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U tienlen -d tienlen"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+    networks:
+      - tienlen-net
+    restart: unless-stopped
+
+volumes:
+  redis-data:
+  pg-data:
+
+networks:
+  tienlen-net:
+    driver: bridge

@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Tien Len Mien Nam</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap');
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Nunito', -apple-system, sans-serif; background: linear-gradient(180deg, #dceefb 0%, #c4e0f4 40%, #b8d8f0 100%); color: #2c3e50; min-height: 100vh; overflow-x: hidden; }
+  .container { max-width: 520px; margin: 0 auto; padding: 8px; }
+
+  h2 { color: #1a5276; text-align: center; margin: 10px 0; font-size: 22px; font-weight: 800; text-shadow: 0 1px 0 #fff; letter-spacing: 1px; }
+
+  .section { background: #ffffff; border-radius: 14px; padding: 12px; margin-bottom: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.06); border: 1px solid #e0ecf5; }
+  .section h3 { color: #3a7cbd; font-size: 12px; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 1.5px; font-weight: 700; }
+
+  input, select { padding: 10px 12px; border-radius: 10px; border: 1px solid #c8dce8; background: #f5f9fc; color: #2c3e50; font-size: 14px; font-family: inherit; box-shadow: inset 0 2px 4px rgba(0,0,0,0.04); transition: border-color 0.2s; }
+  input:focus, select:focus { outline: none; border-color: #4a9ede; box-shadow: inset 0 2px 4px rgba(0,0,0,0.04), 0 0 0 3px rgba(74,158,222,0.15); }
+  input { width: 100%; margin-bottom: 6px; }
+  select { width: 100%; margin-bottom: 4px; }
+
+  button { padding: 10px; border-radius: 10px; border: none; font-weight: 700; cursor: pointer; width: 100%; margin-bottom: 4px; font-size: 14px; font-family: inherit; transition: transform 0.1s, box-shadow 0.1s; background: linear-gradient(180deg, #5aade0 0%, #3a8fc8 100%); color: #fff; box-shadow: 0 3px 0 #2b7ab5, 0 4px 8px rgba(0,0,0,0.12); text-shadow: 0 1px 1px rgba(0,0,0,0.15); }
+  button:active { transform: translateY(2px); box-shadow: 0 1px 0 #2b7ab5, 0 2px 4px rgba(0,0,0,0.1); }
+  button.danger { background: linear-gradient(180deg, #e87c6f 0%, #d35649 100%); box-shadow: 0 3px 0 #b8433a, 0 4px 8px rgba(0,0,0,0.12); }
+  button.gold { background: linear-gradient(180deg, #f7c948 0%, #eda92a 100%); color: #5a3e00; box-shadow: 0 3px 0 #c98a1a, 0 4px 8px rgba(0,0,0,0.12); text-shadow: 0 1px 0 rgba(255,255,255,0.3); }
+  button:disabled { opacity: 0.4; cursor: default; }
+  .row { display: flex; gap: 6px; }
+  .row > * { flex: 1; }
+
+  #log { background: #f0f6fa; border: 1px solid #d4e4ef; border-radius: 10px; padding: 8px; height: 140px; overflow-y: auto; font-family: 'SF Mono', 'Courier New', monospace; font-size: 10px; white-space: pre-wrap; word-break: break-all; line-height: 1.5; color: #4a6a80; box-shadow: inset 0 2px 4px rgba(0,0,0,0.04); }
+
+  .badge { display: inline-block; padding: 4px 12px; border-radius: 12px; font-size: 11px; font-weight: 700; }
+  .badge.on { background: #d4efdf; color: #1e8449; border: 1px solid #a9dfbf; }
+  .badge.off { background: #fadbd8; color: #c0392b; border: 1px solid #f1948a; }
+
+  .card-img-wrap { display: inline-block; position: relative; margin: 2px; cursor: pointer; transition: transform 0.15s, box-shadow 0.15s; border-radius: 6px; }
+  .card-img-wrap img { width: 56px; height: auto; border-radius: 5px; display: block; pointer-events: none; box-shadow: 0 2px 6px rgba(0,0,0,0.15); }
+  .card-img-wrap.selected { transform: translateY(-14px); box-shadow: 0 8px 24px rgba(245,166,35,0.45); }
+  .card-img-wrap.selected::after { content: ''; position: absolute; inset: -2px; border: 2.5px solid #f5a623; border-radius: 7px; }
+  .card-img-wrap:active { transform: scale(0.95); }
+
+  #hand { min-height: 90px; padding: 10px 6px; background: #eaf3fa; border-radius: 14px; margin-bottom: 6px; display: flex; flex-wrap: wrap; justify-content: center; align-items: flex-end; gap: 0; box-shadow: inset 0 3px 8px rgba(0,0,0,0.06); border: 1px solid #d4e4ef; }
+  #table { min-height: 100px; padding: 12px; background: radial-gradient(ellipse at center, #b8d8f0 0%, #9cc5e4 60%, #85b8d8 100%); border-radius: 14px; margin-bottom: 6px; text-align: center; display: flex; flex-wrap: wrap; justify-content: center; align-items: center; border: 3px solid #a0c8e0; box-shadow: inset 0 2px 12px rgba(0,0,0,0.08), 0 2px 8px rgba(0,0,0,0.06); }
+  .table-empty { color: #7ba8c4; font-style: italic; font-size: 13px; font-weight: 600; }
+
+  .players-bar { display: flex; gap: 5px; margin-bottom: 6px; }
+  .player-slot { flex: 1; background: #ffffff; border-radius: 10px; padding: 6px 4px; text-align: center; font-size: 11px; border: 2px solid #e0ecf5; transition: all 0.3s; box-shadow: 0 1px 4px rgba(0,0,0,0.06); }
+  .player-slot.active-turn { border-color: #f5a623; background: #fef9e7; box-shadow: 0 0 12px rgba(245,166,35,0.25); }
+  .player-slot.me { border-color: #3498db; background: #eaf5fd; }
+  .player-slot .name { font-weight: 700; color: #2c3e50; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-size: 11px; }
+  .player-slot .cards-left { color: #5d8aa8; font-size: 10px; font-weight: 600; }
+  .player-slot .mini-cards { display: flex; justify-content: center; gap: 1px; margin-top: 2px; flex-wrap: wrap; }
+  .player-slot .mini-card { width: 8px; height: 12px; background: linear-gradient(135deg, #4a9ede, #2b7cc4); border-radius: 1.5px; box-shadow: 0 1px 2px rgba(0,0,0,0.15); }
+  .player-slot .ready-badge { font-size: 9px; padding: 2px 8px; border-radius: 8px; font-weight: 700; }
+  .player-slot .ready-badge.yes { background: #d5f5e3; color: #1e8449; }
+  .player-slot .ready-badge.no { background: #ebedef; color: #95a5a6; }
+  .player-slot.empty .name { color: #bdc3c7; }
+  .bot-badge { display: inline-block; background: #e8daef; color: #7d3c98; font-size: 8px; padding: 1px 5px; border-radius: 6px; margin-left: 2px; font-weight: 800; vertical-align: middle; }
+
+  .turn-banner { text-align: center; padding: 8px; font-size: 15px; font-weight: 700; border-radius: 10px; margin-bottom: 6px; }
+  .turn-banner.my-turn { background: linear-gradient(135deg, #fef9e7, #fdebd0); color: #d4880f; border: 1px solid #f5cba7; animation: pulse 1.5s infinite; }
+  .turn-banner.other-turn { background: #f0f6fa; color: #7f8c8d; border: 1px solid #e0ecf5; }
+  @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.7; } }
+
+  .settlement-overlay { position: fixed; inset: 0; background: rgba(26,82,118,0.7); backdrop-filter: blur(6px); display: flex; align-items: center; justify-content: center; z-index: 100; animation: fadeIn 0.3s ease; }
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+  .settlement-box { background: #ffffff; border: none; border-radius: 20px; padding: 24px 20px; max-width: 380px; width: 92%; text-align: center; box-shadow: 0 12px 40px rgba(0,0,0,0.2), 0 2px 8px rgba(0,0,0,0.1); }
+  .settlement-box h3 { color: #1a5276; margin-bottom: 4px; font-size: 18px; }
+  .settlement-winner-icon { margin-bottom: 8px; }
+  .settlement-row { display: flex; justify-content: space-between; padding: 8px 4px; font-size: 13px; border-bottom: 1px solid #ebedef; align-items: center; }
+  .settlement-row:last-of-type { border-bottom: none; }
+  .settlement-row .gold.positive { color: #27ae60; font-weight: 800; font-size: 14px; }
+  .settlement-row .gold.negative { color: #e74c3c; font-weight: 700; font-size: 14px; }
+  .settlement-row .penalty { color: #e67e22; font-size: 11px; font-weight: 600; display: flex; align-items: center; gap: 4px; }
+  .settlement-row .winner-label { color: #d4880f; font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; }
+  .settlement-fee { text-align: center; margin-top: 10px; padding: 8px; background: #f8f9fa; border-radius: 10px; font-size: 12px; color: #7f8c8d; border: 1px dashed #d5dbdb; }
+  .settlement-fee span { color: #e67e22; font-weight: 700; }
+
+  .toast-container { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); z-index: 200; pointer-events: none; }
+  .toast { background: #fff; border-radius: 16px; padding: 12px 20px; box-shadow: 0 8px 30px rgba(0,0,0,0.2); display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 16px; color: #c0392b; animation: toastIn 0.4s ease, toastOut 0.4s ease 2.2s forwards; border: 2px solid #e74c3c; }
+  @keyframes toastIn { from { opacity: 0; transform: translateY(-30px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes toastOut { from { opacity: 1; } to { opacity: 0; transform: translateY(-20px); } }
+
+  @keyframes confetti { 0% { transform: translateY(0) rotate(0deg); opacity: 1; } 100% { transform: translateY(-40px) rotate(360deg); opacity: 0; } }
+  .confetti-dot { position: absolute; width: 6px; height: 6px; border-radius: 50%; animation: confetti 1s ease-out forwards; }
+</style>
+</head>
+<body>
+<div class="container">
+
+<h2>TIEN LEN MIEN NAM</h2>
+
+<div class="section" id="authSection">
+  <h3>Connect</h3>
+  <input id="serverUrl" placeholder="Server IP:Port" value="172.16.0.148:8700">
+  <div class="row">
+    <input id="username" placeholder="Username" style="width:45%">
+    <input id="password" type="password" placeholder="Password" style="width:45%">
+  </div>
+  <div class="row">
+    <button onclick="doLogin()">Login</button>
+    <button onclick="doRegister()" style="background:linear-gradient(180deg,#8e9eab,#6d7f8d);box-shadow:0 3px 0 #576a76,0 4px 8px rgba(0,0,0,0.12)">Register</button>
+  </div>
+  <div style="text-align:center;margin-top:6px">
+    <span id="authStatus" class="badge off">Not connected</span>
+  </div>
+</div>
+
+<div class="section" id="roomSection" style="display:none">
+  <h3>Room</h3>
+  <div class="row" style="margin-bottom:6px">
+    <button onclick="quickPlayBots(100)" class="gold" style="font-size:12px">Bots 100G</button>
+    <button onclick="quickPlayBots(500)" class="gold" style="font-size:12px">Bots 500G</button>
+    <button onclick="quickPlayBots(1000)" class="gold" style="font-size:12px">Bots 1000G</button>
+  </div>
+  <div class="row">
+    <input id="roomId" type="number" placeholder="Room #" value="1" style="width:25%">
+    <button onclick="joinRoom()" style="width:25%">Join</button>
+    <button onclick="sendReady()" class="gold" style="width:25%">Ready</button>
+    <button onclick="leaveRoom()" class="danger" style="width:25%">Leave</button>
+  </div>
+  <div class="row" style="margin-top:4px">
+    <select id="anteSelect">
+      <option value="100">100G Rooms</option>
+      <option value="500">500G Rooms</option>
+      <option value="1000">1000G Rooms</option>
+    </select>
+    <button onclick="autoMatch()" class="gold">Auto Match</button>
+  </div>
+  <div id="botRoomList" style="margin-top:6px;max-height:110px;overflow-y:auto;font-size:11px"></div>
+</div>
+
+<div id="playersSection" style="display:none">
+  <div class="players-bar" id="playersBar"></div>
+</div>
+
+<div id="turnBanner" class="turn-banner other-turn" style="display:none"></div>
+
+<div id="tableSection" style="display:none">
+  <div id="table"><span class="table-empty">Waiting for game to start...</span></div>
+</div>
+
+<div id="handSection" style="display:none">
+  <div id="hand"></div>
+  <div class="row">
+    <button onclick="playSelected()" class="gold">Play Selected</button>
+    <button onclick="passTurn()">Pass</button>
+  </div>
+</div>
+
+<div class="section" id="chatSection" style="display:none">
+  <div class="row">
+    <input id="chatMsg" placeholder="Chat..." style="width:75%">
+    <button onclick="sendChat()" style="width:25%">Send</button>
+  </div>
+</div>
+
+<div class="section">
+  <h3>Log <button onclick="document.getElementById('log').textContent=''" class="danger" style="width:auto;padding:2px 10px;float:right;font-size:10px;margin:0">Clear</button></h3>
+  <div id="log"></div>
+</div>
+
+</div>
+
+<div class="toast-container" id="toastContainer"></div>
+
+<div id="settlementOverlay" class="settlement-overlay" style="display:none">
+  <div class="settlement-box">
+    <div class="settlement-winner-icon" id="settlementIcon"></div>
+    <h3 id="settlementTitle">Game Over!</h3>
+    <div id="settlementResults"></div>
+    <button onclick="dismissSettlement()" style="margin-top:14px" class="gold">Continue</button>
+  </div>
+</div>
+
+<script>
+const CARD_PATH = '/client/assets/cards/PNG/Cards (large)/';
+const SUIT_MAP = { S: 'spades', C: 'clubs', D: 'diamonds', H: 'hearts' };
+const RANK_MAP = {
+  '3':'03','4':'04','5':'05','6':'06','7':'07','8':'08','9':'09','10':'10',
+  'J':'J','Q':'Q','K':'K','A':'A','2':'02'
+};
+
+function cardImageUrl(card) {
+  const suit = SUIT_MAP[card.suit] || 'spades';
+  const rank = RANK_MAP[card.rank] || card.rank;
+  return CARD_PATH + 'card_' + suit + '_' + rank + '.png';
+}
+function cardBackUrl() { return CARD_PATH + 'card_back.png'; }
+
+const SVG = {
+  trophy: `<svg width="48" height="48" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M20 8h24v4c0 8-4 18-12 22-8-4-12-14-12-22V8z" fill="#f5c842"/>
+    <path d="M20 8h24v4c0 8-4 18-12 22-8-4-12-14-12-22V8z" fill="url(#tg)" opacity="0.4"/>
+    <path d="M16 10c-4 0-8 2-8 8s4 10 8 10" stroke="#f5c842" stroke-width="3" fill="none"/>
+    <path d="M48 10c4 0 8 2 8 8s-4 10-8 10" stroke="#f5c842" stroke-width="3" fill="none"/>
+    <rect x="26" y="34" width="12" height="6" rx="1" fill="#d4a017"/>
+    <rect x="22" y="40" width="20" height="5" rx="2" fill="#b8860b"/>
+    <circle cx="32" cy="20" r="4" fill="#fff" opacity="0.3"/>
+    <path d="M30 3l2 4 4 .5-3 3 .7 4.2L30 12.5l-3.7 2.2.7-4.2-3-3L28 7z" fill="#f5c842"/>
+    <path d="M44 3l1.5 3 3.5.4-2.5 2.4.6 3.2L44 10.5l-3.1 1.5.6-3.2L39 6.4l3.5-.4z" fill="#f5c842" opacity="0.6"/>
+    <path d="M18 5l1.2 2.5 2.8.3-2 2 .5 2.7L18 11l-2.5 1.5.5-2.7-2-2 2.8-.3z" fill="#f5c842" opacity="0.6"/>
+    <defs><linearGradient id="tg" x1="32" y1="8" x2="32" y2="34"><stop stop-color="#fff"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient></defs>
+  </svg>`,
+
+  pigSad: `<svg width="28" height="28" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="20" cy="22" r="16" fill="#f8b4c8"/>
+    <ellipse cx="20" cy="26" rx="8" ry="5" fill="#f09cb0"/>
+    <circle cx="16" cy="25" r="1.5" fill="#d4708a"/>
+    <circle cx="24" cy="25" r="1.5" fill="#d4708a"/>
+    <circle cx="14" cy="18" r="2.5" fill="#fff"/>
+    <circle cx="14" cy="18" r="1.2" fill="#333"/>
+    <circle cx="26" cy="18" r="2.5" fill="#fff"/>
+    <circle cx="26" cy="18" r="1.2" fill="#333"/>
+    <path d="M14 32 q6 -3 12 0" stroke="#d4708a" stroke-width="1.5" fill="none"/>
+    <circle cx="30" cy="12" r="3" fill="#5dade2" opacity="0.7"/>
+    <path d="M29 10 l2-3" stroke="#5dade2" stroke-width="1" opacity="0.7"/>
+  </svg>`,
+
+  pigDead: `<svg width="28" height="28" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="20" cy="22" r="16" fill="#f8b4c8"/>
+    <ellipse cx="20" cy="26" rx="8" ry="5" fill="#f09cb0"/>
+    <circle cx="16" cy="25" r="1.5" fill="#d4708a"/>
+    <circle cx="24" cy="25" r="1.5" fill="#d4708a"/>
+    <line x1="11" y1="15" x2="17" y2="21" stroke="#c0392b" stroke-width="2" stroke-linecap="round"/>
+    <line x1="17" y1="15" x2="11" y2="21" stroke="#c0392b" stroke-width="2" stroke-linecap="round"/>
+    <line x1="23" y1="15" x2="29" y2="21" stroke="#c0392b" stroke-width="2" stroke-linecap="round"/>
+    <line x1="29" y1="15" x2="23" y2="21" stroke="#c0392b" stroke-width="2" stroke-linecap="round"/>
+    <path d="M14 33 q6 -4 12 0" stroke="#c0392b" stroke-width="1.5" fill="none"/>
+  </svg>`,
+
+  pigFire: `<svg width="28" height="28" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="20" cy="22" r="16" fill="#f8b4c8"/>
+    <ellipse cx="20" cy="26" rx="8" ry="5" fill="#f09cb0"/>
+    <circle cx="16" cy="25" r="1.5" fill="#d4708a"/>
+    <circle cx="24" cy="25" r="1.5" fill="#d4708a"/>
+    <line x1="11" y1="15" x2="17" y2="21" stroke="#c0392b" stroke-width="2.5" stroke-linecap="round"/>
+    <line x1="17" y1="15" x2="11" y2="21" stroke="#c0392b" stroke-width="2.5" stroke-linecap="round"/>
+    <line x1="23" y1="15" x2="29" y2="21" stroke="#c0392b" stroke-width="2.5" stroke-linecap="round"/>
+    <line x1="29" y1="15" x2="23" y2="21" stroke="#c0392b" stroke-width="2.5" stroke-linecap="round"/>
+    <path d="M14 33 q6 -4 12 0" stroke="#c0392b" stroke-width="2" fill="none"/>
+    <path d="M10 6 c0-4 3-6 3-6 s0 3 2 4 c2 1 3-1 3-1 s-1 4-3 5c-2 1-5 0-5-2z" fill="#e74c3c"/>
+    <path d="M12 7 c0-2 1.5-3 1.5-3 s0 1.5 1 2c1 .5 1.5-.5 1.5-.5s-.5 2-1.5 2.5c-1 .5-2.5 0-2.5-1z" fill="#f39c12"/>
+    <path d="M28 4 c0-4 3-6 3-6 s0 3 2 4 c2 1 3-1 3-1 s-1 4-3 5c-2 1-5 0-5-2z" fill="#e74c3c"/>
+    <path d="M30 5 c0-2 1.5-3 1.5-3 s0 1.5 1 2c1 .5 1.5-.5 1.5-.5s-.5 2-1.5 2.5c-1 .5-2.5 0-2.5-1z" fill="#f39c12"/>
+  </svg>`,
+
+  chopPig: `<svg width="40" height="40" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="28" cy="28" r="14" fill="#f8b4c8"/>
+    <ellipse cx="28" cy="32" rx="6" ry="4" fill="#f09cb0"/>
+    <circle cx="24" cy="31" r="1.2" fill="#d4708a"/>
+    <circle cx="32" cy="31" r="1.2" fill="#d4708a"/>
+    <circle cx="23" cy="25" r="2" fill="#fff"/>
+    <circle cx="23" cy="25" r="1" fill="#333"/>
+    <circle cx="33" cy="25" r="2" fill="#fff"/>
+    <circle cx="33" cy="25" r="1" fill="#333"/>
+    <path d="M23 36 q5 -2 10 0" stroke="#d4708a" stroke-width="1.2" fill="none"/>
+    <rect x="2" y="6" width="4" height="24" rx="1" fill="#8B4513"/>
+    <path d="M6 6 L22 14 L22 18 L6 30 Z" fill="#bdc3c7"/>
+    <path d="M6 6 L22 14 L22 16 L6 8 Z" fill="#d5d8dc"/>
+    <line x1="6" y1="8" x2="22" y2="16" stroke="#95a5a6" stroke-width="0.5"/>
+  </svg>`
+};
+
+function getPigSvg(multiplier) {
+  if (multiplier === 4) return SVG.pigFire;
+  if (multiplier === 3) return SVG.pigDead;
+  return SVG.pigSad;
+}
+
+function showToast(html, duration) {
+  const container = document.getElementById('toastContainer');
+  const toast = document.createElement('div');
+  toast.className = 'toast';
+  toast.innerHTML = html;
+  container.appendChild(toast);
+  setTimeout(() => toast.remove(), duration || 2800);
+}
+
+let token = '', userId = 0, myUsername = '';
+let ws = null;
+let myHand = [], selectedCards = new Set();
+let gamePlayers = [], gamePhase = 'LOBBY', currentTurn = -1, mySeat = -1;
+let lastMoveComboType = -1, lastMoveCards = [];
+
+function getBase() { return 'http://' + document.getElementById('serverUrl').value; }
+function getWsBase() { return 'ws://' + document.getElementById('serverUrl').value; }
+
+function log(msg) {
+  const el = document.getElementById('log');
+  const t = new Date().toLocaleTimeString();
+  el.textContent += `[${t}] ${msg}\n`;
+  el.scrollTop = el.scrollHeight;
+}
+
+async function doRegister() {
+  try {
+    const r = await fetch(getBase() + '/api/auth/register', {
+      method: 'POST', headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({username: document.getElementById('username').value, password: document.getElementById('password').value})
+    });
+    const d = await r.json();
+    if (d.token) { onAuth(d); } else { log('Register: ' + (d.error||'failed')); }
+  } catch(e) { log('Register error: ' + e.message); }
+}
+
+async function doLogin() {
+  try {
+    const r = await fetch(getBase() + '/api/auth/login', {
+      method: 'POST', headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({username: document.getElementById('username').value, password: document.getElementById('password').value})
+    });
+    const d = await r.json();
+    if (d.token) { onAuth(d); } else { log('Login: ' + (d.error||'failed')); }
+  } catch(e) { log('Login error: ' + e.message); }
+}
+
+function onAuth(d) {
+  token = d.token; userId = d.user_id; myUsername = d.username;
+  document.getElementById('authStatus').textContent = myUsername + ' (id:' + userId + ')';
+  document.getElementById('authStatus').className = 'badge on';
+  log('Logged in as ' + myUsername);
+  wsConnect();
+}
+
+function wsConnect() {
+  if (ws) ws.close();
+  ws = new WebSocket(getWsBase() + '/ws?token=' + token);
+  ws.onopen = () => {
+    log('WebSocket connected');
+    document.getElementById('authStatus').textContent = myUsername + ' - Online';
+    ['roomSection','chatSection'].forEach(s => document.getElementById(s).style.display = '');
+    loadBotRooms();
+  };
+  ws.onclose = () => {
+    log('WebSocket disconnected');
+    document.getElementById('authStatus').textContent = myUsername + ' - Offline';
+    document.getElementById('authStatus').className = 'badge off';
+  };
+  ws.onmessage = (e) => handleMessage(JSON.parse(e.data));
+  ws.onerror = () => log('WS error');
+}
+
+function wsSend(type, payload) {
+  if (!ws || ws.readyState !== 1) { log('Not connected'); return; }
+  ws.send(JSON.stringify({type, payload}));
+  log('>> ' + type);
+}
+
+function joinRoom() { wsSend('join_room', {room_id: parseInt(document.getElementById('roomId').value)}); }
+function leaveRoom() { wsSend('leave_room', {}); hideGame(); }
+function sendReady() { wsSend('ready', {}); }
+function passTurn() { wsSend('pass_turn', {}); }
+function autoMatch() { wsSend('auto_match', {ante_level: parseInt(document.getElementById('anteSelect').value)}); }
+
+async function quickPlayBots(ante) {
+  try {
+    const r = await fetch(getBase() + '/api/rooms?ante=' + ante, {
+      headers: {'Authorization': 'Bearer ' + token}
+    });
+    const d = await r.json();
+    const botRooms = (d.rooms || []).filter(rm => rm.has_bots && rm.player_count < 4);
+    if (!botRooms.length) { log('No bot rooms available for ' + ante + 'G'); return; }
+    const room = botRooms[0];
+    log('Joining bot room ' + room.id + ' (' + room.name + ')');
+    document.getElementById('roomId').value = room.id;
+    wsSend('join_room', {room_id: room.id});
+    setTimeout(() => { wsSend('ready', {}); log('Auto-ready sent'); }, 1000);
+  } catch(e) { log('Error finding bot room: ' + e.message); }
+}
+
+async function loadBotRooms() {
+  if (!token) return;
+  try {
+    const r = await fetch(getBase() + '/api/rooms', {headers: {'Authorization': 'Bearer ' + token}});
+    const d = await r.json();
+    const el = document.getElementById('botRoomList');
+    const botRooms = (d.rooms || []).filter(rm => rm.has_bots);
+    if (!botRooms.length) { el.innerHTML = '<span style="color:#95a5a6">No bot rooms found</span>'; return; }
+    el.innerHTML = botRooms.map(rm =>
+      `<div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid #ebedef;align-items:center">
+        <span style="color:#5d6d7e">${rm.name} (${rm.player_count}/4)</span>
+        <button onclick="document.getElementById('roomId').value=${rm.id};joinRoom();setTimeout(sendReady,1000)" style="width:auto;padding:2px 12px;font-size:10px;margin:0">Join</button>
+      </div>`
+    ).join('');
+  } catch(e) {}
+}
+function sendChat() {
+  const msg = document.getElementById('chatMsg').value.trim();
+  if (msg) { wsSend('chat', {message: msg}); document.getElementById('chatMsg').value = ''; }
+}
+
+function playSelected() {
+  const cards = [];
+  const indices = Array.from(selectedCards).sort((a,b) => b - a);
+  indices.forEach(i => cards.push(myHand[i]));
+  if (!cards.length) { log('Select cards first!'); return; }
+  wsSend('play_cards', {cards});
+  indices.forEach(i => myHand.splice(i, 1));
+  selectedCards.clear();
+  renderHand();
+}
+
+function handleMessage(msg) {
+  const p = msg.payload || {};
+  switch(msg.type) {
+    case 'card_dealt':
+      myHand = p.hand || [];
+      gamePlayers = p.players || [];
+      gamePhase = p.phase || 'PLAYING';
+      currentTurn = p.current_turn ?? -1;
+      findMySeat();
+      showGame();
+      renderAll();
+      log('<< Cards dealt: ' + myHand.length + ' cards');
+      break;
+    case 'game_state':
+      if (p.hand && p.hand.length) myHand = p.hand;
+      gamePlayers = p.players || gamePlayers;
+      gamePhase = p.phase || gamePhase;
+      currentTurn = p.current_turn ?? currentTurn;
+      findMySeat();
+      showGame();
+      renderAll();
+      log('<< game_state: ' + gamePhase);
+      break;
+    case 'room_update':
+      if (p.players) gamePlayers = p.players;
+      gamePhase = p.phase || 'LOBBY';
+      findMySeat();
+      renderPlayers();
+      renderTurnBanner();
+      log('<< room_update: ' + (p.name||'') + ' ' + (p.player_count||'?') + '/4, ' + gamePhase);
+      break;
+    case 'move_played':
+      renderTable(p.cards || []);
+      if (p.player_index === mySeat && p.cards) {
+        removeCardsFromHand(p.cards);
+        renderHand();
+      }
+      detectChopPig(p);
+      log('<< move_played: seat ' + p.player_index + ' -> ' + (p.cards||[]).map(c=>c.rank+c.suit).join(' '));
+      break;
+    case 'turn_change':
+      currentTurn = p.current_turn ?? currentTurn;
+      if (p.table_clear) renderTable([]);
+      renderTurnBanner();
+      renderPlayers();
+      log('<< turn -> seat ' + currentTurn + (p.table_clear ? ' (cleared)' : '') + (p.action ? ' ['+p.action+']' : ''));
+      break;
+    case 'settlement':
+      showSettlement(p);
+      log('<< SETTLEMENT: winner seat ' + p.winner);
+      break;
+    case 'match_found':
+      log('<< Match found! Room ' + p.room_id);
+      showGame();
+      break;
+    case 'chat_relay':
+      log('[CHAT] ' + p.sender + ': ' + p.message);
+      break;
+    case 'error':
+      log('ERROR: ' + (p.error || JSON.stringify(p)));
+      break;
+    default:
+      log('<< ' + msg.type + ': ' + JSON.stringify(p));
+  }
+}
+
+function detectChopPig(movePayload) {
+  const combo = movePayload.combo_type;
+  const cards = movePayload.cards || [];
+  if (combo === 5 || (combo === 4 && cards.length >= 6)) {
+    if (lastMoveComboType === 0 && lastMoveCards.length === 1 && lastMoveCards[0].rank === '2') {
+      showToast(SVG.chopPig + '<span>CHOP PIG!</span>');
+    }
+    if (lastMoveComboType === 1 && lastMoveCards.length === 2 && lastMoveCards[0].rank === '2') {
+      showToast(SVG.chopPig + '<span>CHOP PIG!</span>');
+    }
+  }
+  lastMoveComboType = combo;
+  lastMoveCards = cards;
+}
+
+function findMySeat() {
+  mySeat = -1;
+  for (const p of gamePlayers) {
+    if (p && p.user_id === userId) { mySeat = p.seat_index; break; }
+  }
+}
+
+function removeCardsFromHand(cards) {
+  for (const c of cards) {
+    const idx = myHand.findIndex(h => h.rank === c.rank && h.suit === c.suit);
+    if (idx >= 0) myHand.splice(idx, 1);
+  }
+}
+
+function showGame() {
+  ['playersSection','tableSection','handSection','turnBanner'].forEach(s => document.getElementById(s).style.display = '');
+}
+function hideGame() {
+  ['playersSection','tableSection','handSection','turnBanner'].forEach(s => document.getElementById(s).style.display = 'none');
+  myHand = []; gamePlayers = []; gamePhase = 'LOBBY'; currentTurn = -1; mySeat = -1;
+}
+
+function renderAll() {
+  renderHand();
+  renderPlayers();
+  renderTurnBanner();
+}
+
+function renderHand() {
+  const el = document.getElementById('hand');
+  el.innerHTML = '';
+  selectedCards.clear();
+  myHand.forEach((card, i) => {
+    const wrap = document.createElement('div');
+    wrap.className = 'card-img-wrap';
+    const img = document.createElement('img');
+    img.src = cardImageUrl(card);
+    img.alt = card.rank + card.suit;
+    img.title = card.rank + ' of ' + (SUIT_MAP[card.suit]||card.suit);
+    wrap.appendChild(img);
+    wrap.onclick = () => {
+      if (selectedCards.has(i)) { selectedCards.delete(i); wrap.classList.remove('selected'); }
+      else { selectedCards.add(i); wrap.classList.add('selected'); }
+    };
+    el.appendChild(wrap);
+  });
+}
+
+function renderTable(cards) {
+  const el = document.getElementById('table');
+  if (!cards || !cards.length) {
+    el.innerHTML = '<span class="table-empty">Table cleared</span>';
+    return;
+  }
+  el.innerHTML = '';
+  cards.forEach(card => {
+    const wrap = document.createElement('div');
+    wrap.className = 'card-img-wrap';
+    wrap.style.cursor = 'default';
+    const img = document.createElement('img');
+    img.src = cardImageUrl(card);
+    img.alt = card.rank + card.suit;
+    wrap.appendChild(img);
+    el.appendChild(wrap);
+  });
+}
+
+function renderPlayers() {
+  const bar = document.getElementById('playersBar');
+  bar.innerHTML = '';
+  for (let seat = 0; seat < 4; seat++) {
+    const p = gamePlayers.find(pl => pl && pl.seat_index === seat);
+    const slot = document.createElement('div');
+    slot.className = 'player-slot';
+    if (!p) {
+      slot.classList.add('empty');
+      slot.innerHTML = '<div class="name">Empty</div><div class="cards-left">---</div>';
+    } else {
+      if (p.user_id === userId) slot.classList.add('me');
+      if (seat === currentTurn && gamePhase === 'PLAYING') slot.classList.add('active-turn');
+      const botTag = p.is_bot ? '<span class="bot-badge">BOT</span>' : '';
+      const meTag = p.user_id === userId ? ' (You)' : '';
+
+      let infoHtml;
+      if (gamePhase === 'LOBBY') {
+        infoHtml = `<span class="ready-badge ${p.is_ready?'yes':'no'}">${p.is_ready?'READY':'...'}</span>`;
+      } else {
+        const miniCards = Array(Math.min(p.card_count, 13)).fill('<span class="mini-card"></span>').join('');
+        infoHtml = `<div class="cards-left">${p.card_count} cards</div><div class="mini-cards">${miniCards}</div>`;
+      }
+      slot.innerHTML = `<div class="name">${p.username}${meTag}${botTag}</div>${infoHtml}`;
+    }
+    bar.appendChild(slot);
+  }
+}
+
+function renderTurnBanner() {
+  const el = document.getElementById('turnBanner');
+  if (gamePhase !== 'PLAYING') {
+    if (gamePhase === 'LOBBY') {
+      el.className = 'turn-banner other-turn';
+      el.textContent = 'Waiting for players to Ready up...';
+    } else {
+      el.className = 'turn-banner other-turn';
+      el.textContent = gamePhase;
+    }
+    return;
+  }
+  const isMe = currentTurn === mySeat;
+  el.className = 'turn-banner ' + (isMe ? 'my-turn' : 'other-turn');
+  if (isMe) {
+    el.textContent = 'YOUR TURN - Select cards and Play!';
+  } else {
+    const p = gamePlayers.find(pl => pl && pl.seat_index === currentTurn);
+    el.textContent = (p ? p.username : 'Seat ' + currentTurn) + "'s turn...";
+  }
+}
+
+function showSettlement(p) {
+  const overlay = document.getElementById('settlementOverlay');
+  const icon = document.getElementById('settlementIcon');
+  const title = document.getElementById('settlementTitle');
+  const results = document.getElementById('settlementResults');
+  const winnerSeat = p.winner;
+  const winnerPlayer = gamePlayers.find(pl => pl && pl.seat_index === winnerSeat);
+
+  icon.innerHTML = SVG.trophy;
+  title.textContent = (winnerPlayer ? winnerPlayer.username : 'Seat ' + winnerSeat) + ' Wins!';
+  results.innerHTML = '';
+
+  (p.results || []).forEach(r => {
+    if (!r) return;
+    const row = document.createElement('div');
+    row.className = 'settlement-row';
+    const isPositive = r.gold_delta > 0;
+    const botTag = r.is_bot ? ' <span class="bot-badge">BOT</span>' : '';
+    const meTag = r.user_id === userId ? ' (You)' : '';
+
+    let penaltyInfo = '';
+    if (!isPositive && r.penalty_multiplier > 1) {
+      const pigSvg = getPigSvg(r.penalty_multiplier);
+      const reasons = [];
+      if (r.penalty_multiplier === 4) reasons.push('4 Twos!');
+      else if (r.penalty_multiplier === 3) reasons.push('13 cards');
+      else if (r.penalty_multiplier === 2) reasons.push(r.twos_held + ' Two(s)');
+      penaltyInfo = `<div class="penalty">${pigSvg} x${r.penalty_multiplier}: ${reasons.join(', ')}</div>`;
+    }
+    if (isPositive) {
+      penaltyInfo = '<div class="winner-label">WINNER</div>';
+    }
+
+    row.innerHTML = `<div style="text-align:left"><span style="font-weight:700">${r.username}${meTag}${botTag}</span>${penaltyInfo}</div>
+      <span class="gold ${isPositive?'positive':'negative'}">${isPositive?'+':''}${r.gold_delta}G</span>`;
+    results.appendChild(row);
+  });
+
+  if (p.server_fee > 0) {
+    const feeDiv = document.createElement('div');
+    feeDiv.className = 'settlement-fee';
+    feeDiv.innerHTML = `Server Fee: <span>${p.server_fee}G</span> (10% of ${p.total_pot}G pot)`;
+    results.appendChild(feeDiv);
+  }
+
+  overlay.style.display = 'flex';
+}
+
+function dismissSettlement() {
+  document.getElementById('settlementOverlay').style.display = 'none';
+  gamePhase = 'LOBBY';
+  myHand = [];
+  renderHand();
+  renderTurnBanner();
+}
+</script>
+</body>
+</html>

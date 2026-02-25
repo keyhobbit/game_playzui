@@ -1,0 +1,37 @@
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# IDE
+.cursor/
+.vscode/
+*.swp
+*.swo
+
+# Build artifacts
+build/
+*.apk
+
+# Godot
+client/.godot/
+client/.import/
+client/export_presets.cfg
+*.import
+*.zip
+
+# Go
+backend/server
+backend/*.exe
+
+# Docker volumes
+pg-data/
+redis-data/
+
+# Environment
+.env
+.env.local
+
+# Temp
+/tmp/
+*.log

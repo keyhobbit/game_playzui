@@ -1,0 +1,273 @@
+[gd_scene load_steps=2 format=3 uid="uid://gameroom001"]
+
+[ext_resource type="Script" path="res://scripts/game/game_room.gd" id="1"]
+
+[node name="GameRoom" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1")
+
+[node name="Background" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color(0.04, 0.22, 0.12, 1)
+
+[node name="TableCenter" type="Control" parent="."]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.4
+anchor_right = 0.5
+anchor_bottom = 0.4
+offset_left = -150.0
+offset_top = -80.0
+offset_right = 150.0
+offset_bottom = 80.0
+
+[node name="TableCards" type="HBoxContainer" parent="TableCenter"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -100.0
+offset_top = -40.0
+offset_right = 100.0
+offset_bottom = 40.0
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
+
+[node name="TopPlayer" type="VBoxContainer" parent="."]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -100.0
+offset_top = 10.0
+offset_right = 100.0
+offset_bottom = 100.0
+grow_horizontal = 2
+
+[node name="NameLabel" type="Label" parent="TopPlayer"]
+layout_mode = 2
+text = "Player 3"
+horizontal_alignment = 1
+
+[node name="CardCount" type="Label" parent="TopPlayer"]
+layout_mode = 2
+text = "Cards: 13"
+horizontal_alignment = 1
+
+[node name="LeftPlayer" type="VBoxContainer" parent="."]
+unique_name_in_owner = true
+layout_mode = 1
+offset_left = 10.0
+offset_top = 400.0
+offset_right = 120.0
+offset_bottom = 500.0
+
+[node name="NameLabel" type="Label" parent="LeftPlayer"]
+layout_mode = 2
+text = "Player 2"
+
+[node name="CardCount" type="Label" parent="LeftPlayer"]
+layout_mode = 2
+text = "Cards: 13"
+
+[node name="RightPlayer" type="VBoxContainer" parent="."]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -120.0
+offset_top = 400.0
+offset_right = -10.0
+offset_bottom = 500.0
+grow_horizontal = 0
+
+[node name="NameLabel" type="Label" parent="RightPlayer"]
+layout_mode = 2
+text = "Player 4"
+horizontal_alignment = 2
+
+[node name="CardCount" type="Label" parent="RightPlayer"]
+layout_mode = 2
+text = "Cards: 13"
+horizontal_alignment = 2
+
+[node name="BottomPlayer" type="VBoxContainer" parent="."]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -100.0
+offset_top = -160.0
+offset_right = 100.0
+offset_bottom = -100.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="NameLabel" type="Label" parent="BottomPlayer"]
+layout_mode = 2
+text = "You"
+horizontal_alignment = 1
+
+[node name="CardCount" type="Label" parent="BottomPlayer"]
+layout_mode = 2
+text = "Cards: 13"
+horizontal_alignment = 1
+
+[node name="HandContainer" type="HBoxContainer" parent="."]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 20.0
+offset_top = -280.0
+offset_right = -20.0
+offset_bottom = -170.0
+grow_horizontal = 2
+grow_vertical = 0
+alignment = 1
+
+[node name="ActionBar" type="HBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -80.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_constants/separation = 10
+
+[node name="ReadyButton" type="Button" parent="ActionBar"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+custom_minimum_size = Vector2(0, 60)
+text = "READY"
+
+[node name="PlayButton" type="Button" parent="ActionBar"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+custom_minimum_size = Vector2(0, 60)
+text = "PLAY"
+visible = false
+
+[node name="PassButton" type="Button" parent="ActionBar"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+custom_minimum_size = Vector2(0, 60)
+text = "PASS"
+visible = false
+
+[node name="LeaveButton" type="Button" parent="ActionBar"]
+layout_mode = 2
+custom_minimum_size = Vector2(100, 60)
+text = "LEAVE"
+
+[node name="TurnIndicator" type="Label" parent="."]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -100.0
+offset_top = 200.0
+offset_right = 100.0
+offset_bottom = 230.0
+grow_horizontal = 2
+text = ""
+horizontal_alignment = 1
+
+[node name="TurnTimer" type="Label" parent="."]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -30.0
+offset_top = 235.0
+offset_right = 30.0
+offset_bottom = 260.0
+grow_horizontal = 2
+text = "30"
+horizontal_alignment = 1
+
+[node name="ChatPanel" type="VBoxContainer" parent="."]
+unique_name_in_owner = true
+layout_mode = 1
+offset_left = 10.0
+offset_top = 600.0
+offset_right = 250.0
+offset_bottom = 850.0
+visible = false
+
+[node name="ChatLog" type="RichTextLabel" parent="ChatPanel"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+bbcode_enabled = true
+scroll_following = true
+
+[node name="ChatInputRow" type="HBoxContainer" parent="ChatPanel"]
+layout_mode = 2
+
+[node name="ChatInput" type="LineEdit" parent="ChatPanel/ChatInputRow"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "Type message..."
+
+[node name="SendButton" type="Button" parent="ChatPanel/ChatInputRow"]
+layout_mode = 2
+text = "Send"
+
+[node name="ChatToggle" type="Button" parent="."]
+layout_mode = 1
+offset_left = 10.0
+offset_top = 560.0
+offset_right = 80.0
+offset_bottom = 590.0
+text = "Chat"
+
+[node name="PhaseLabel" type="Label" parent="."]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -60.0
+offset_top = 170.0
+offset_right = 60.0
+offset_bottom = 195.0
+grow_horizontal = 2
+text = "LOBBY"
+horizontal_alignment = 1
+
+[connection signal="pressed" from="ActionBar/ReadyButton" to="." method="_on_ready_pressed"]
+[connection signal="pressed" from="ActionBar/PlayButton" to="." method="_on_play_pressed"]
+[connection signal="pressed" from="ActionBar/PassButton" to="." method="_on_pass_pressed"]
+[connection signal="pressed" from="ActionBar/LeaveButton" to="." method="_on_leave_pressed"]
+[connection signal="pressed" from="ChatPanel/ChatInputRow/SendButton" to="." method="_on_send_chat"]
+[connection signal="pressed" from="ChatToggle" to="." method="_on_chat_toggle"]
